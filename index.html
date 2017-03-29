@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+<a-Duck-Suit v="0.3"
+Contributors="Ducky; Brian"/>
+-->
+
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <title>a-Duck-Suit</title>
+    <meta name="a-Duck-Suit" content="Duck Suit">  
+    <script src="https://aframe.io/releases/0.3.0/aframe.js"></script>
+    <script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.4.0/dist/aframe-altspace-component.min.js"></script>
+    <script src="https://sdk.altvr.com/libs/altspace.js/1.0.0/altspace.min.js"></script>
+    <script>
+			AFRAME.registerComponent('collapse-model', {
+				init: function () {
+					this.el.addEventListener('model-loaded', function () {
+						this.el.setObject3D('mesh', this.el.object3DMap.mesh.children[0]);
+						// setObject3D emits this event in a-frame 0.4.0
+						this.el.emit('object3dset', {type: 'mesh'});
+					}.bind(this));
+				}
+			});
+		</script>
+
+</head>
+  <body>
+
+    <a-scene altspace="verticalAlign: middle; fullspace: true" vr-mode-ui="enabled: false" sync-system="author: Ducky; app: duck"> 
+
+      <!-- Asset Loading -->
+
+      <a-assets> 
+      <a-asset-item id="duck-mtl" src="duck.mtl"></a-asset-item>
+      <a-asset-item id="duck-obj" src="duck.obj"></a-asset-item>
+      <a-asset-item id="goose-mtl" src="goose.mtl"></a-asset-item>
+      <a-asset-item id="goose-obj" src="goose.obj"></a-asset-item>
+      <a-asset-item id="turtle-mtl" src="turtle.mtl"></a-asset-item>
+      <a-asset-item id="turtle-obj" src="turtle.obj"></a-asset-item>
+      <img id="duck-icon" src="duck.jpg"/>
+      <img id="goose-icon" src="goose.jpg"/>
+      <img id="turtle-icon" src="turtle.jpg"/>
+
+      <a-mixin id="goose" obj-model="obj: #goose-obj; mtl: #goose-mtl" collapse-model scale="0.1 0.1 0.1"></a-mixin>
+      <a-mixin id="goose-spine" rotation="0 -90 0" n-skeleton-parent="part: spine;" position="0.53 -0.4 -0.07" sync sync-n-skeleton-parent></a-mixin>
+      <a-mixin id="duck" obj-model="obj: #duck-obj; mtl: #duck-mtl" collapse-model scale="1 1 1"></a-mixin>
+      <a-mixin id="duck-spine" rotation="0 -90 0" n-skeleton-parent="part: spine;" position="0 -0.4 -0.05" sync sync-n-skeleton-parent></a-mixin>
+      <a-mixin id="turtle" obj-model="obj: #turtle-obj; mtl: #turtle-mtl" collapse-model scale="15 15 15"></a-mixin>
+      <a-mixin id="turtle-spine" rotation="0 -180 0" n-skeleton-parent="part: head;" position="0 0.0 0.1" sync sync-n-skeleton-parent></a-mixin>
+      
+      </a-assets>
+
+      <a-entity id="duck-spine-instantiator" geometry="primitive: box" material="src: #duck-icon" position='-0.81 0.005 -1.55' rotation="-25 0 0" scale="0.15 0.15 0.03" n-cockpit-parent instantiator="on: click; group: duckbb; mixin: duck duck-spine;" altspace-cursor-collider="enabled: true"></a-entity>
+      <a-entity id="goose-spine-instantiator" geometry="primitive: box" material="src: #goose-icon" position='-01.01 0.005 -1.55' rotation="-25 0 0" scale="0.15 0.15 0.03" n-cockpit-parent instantiator="on: click; group: duckbb; mixin: goose goose-spine;" altspace-cursor-collider="enabled: true"></a-entity>
+      <a-entity id="turtle-spine-instantiator" geometry="primitive: box" material="src: #turtle-icon" position='-0.61 0.005 -1.55' rotation="-25 0 0" scale="0.15 0.15 0.03" n-cockpit-parent instantiator="on: click; group: duckbb; mixin: turtle turtle-spine;" altspace-cursor-collider="enabled: true"></a-entity>
+
+    </a-scene>
+  </body>
+</html>
